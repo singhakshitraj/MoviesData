@@ -33,7 +33,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
     recommendation = ServerCalls()
         .getMoviesAdditionalData(widget.id.toString(), 'recommendations');
     reviews = ServerCalls().getMovieReviews(widget.id.toString());
-    imageUrls = ServerCalls().getImageUrls(widget.id.toString());
+    imageUrls = ServerCalls().getImageUrls(widget.id.toString(), 'movie');
     super.initState();
   }
 

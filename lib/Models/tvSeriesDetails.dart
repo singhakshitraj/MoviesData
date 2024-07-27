@@ -1,36 +1,3 @@
-/// adult : false
-/// backdrop_path : "/9kyyQXy79YRdY5mhrYKyktbFMev.jpg"
-/// created_by : [{"id":1754390,"credit_id":"5db721ba27d9cc001813ccf5","name":"Vivienne Medrano","original_name":"Vivienne Medrano","gender":1,"profile_path":null}]
-/// episode_run_time : [25]
-/// first_air_date : "2024-01-18"
-/// genres : [{"id":16,"name":"Animation"},{"id":35,"name":"Comedy"},{"id":10765,"name":"Sci-Fi & Fantasy"}]
-/// homepage : "https://www.amazon.com/dp/B0CLMPQTJ2"
-/// id : 94954
-/// in_production : true
-/// languages : ["en"]
-/// last_air_date : "2024-02-01"
-/// last_episode_to_air : {"id":4768894,"name":"The Show Must Go On","overview":"All bets are off as the confrontation between the legions of Heaven and Hell begins.","vote_average":7.375,"vote_count":8,"air_date":"2024-02-01","episode_number":8,"episode_type":"finale","production_code":"1BBHH08","runtime":25,"season_number":1,"show_id":94954,"still_path":"/mVa6wxS7I7097HyMi1FGe38XrOm.jpg"}
-/// name : "Hazbin Hotel"
-/// next_episode_to_air : null
-/// networks : [{"id":1024,"logo_path":"/ifhbNuuVnlwYy5oXA5VIb2YR8AZ.png","name":"Prime Video","origin_country":""}]
-/// number_of_episodes : 8
-/// number_of_seasons : 1
-/// origin_country : ["US"]
-/// original_language : "en"
-/// original_name : "Hazbin Hotel"
-/// overview : "In attempt to find a non-violent alternative for reducing Hell's overpopulation, the daughter of Lucifer opens a rehabilitation hotel that offers a group of misfit demons a chance at redemption."
-/// popularity : 220.623
-/// poster_path : "/rXojaQcxVUubPLSrFV8PD4xdjrs.jpg"
-/// production_companies : [{"id":41077,"logo_path":"/1ZXsGaFPgrgS6ZZGS37AqD5uU12.png","name":"A24","origin_country":"US"},{"id":139412,"logo_path":"/4HQQR6ySkFByBmCHtZfYXktHkAY.png","name":"SpindleHorse Toons","origin_country":"US"},{"id":30452,"logo_path":"/zmU1ElCS02iL5N7E5MuY4fV7bCX.png","name":"Bento Box Entertainment","origin_country":"US"}]
-/// production_countries : [{"iso_3166_1":"US","name":"United States of America"}]
-/// seasons : [{"air_date":"2019-10-28","episode_count":2,"id":199540,"name":"Specials","overview":"","poster_path":"/aYApV2vAn2bvY8HbkXHGbmG6FYS.jpg","season_number":0,"vote_average":0},{"air_date":"2024-01-18","episode_count":8,"id":134875,"name":"Season 1","overview":"","poster_path":"/u9zmPp8ouqyX2zwXkqM9JzJ4zCO.jpg","season_number":1,"vote_average":7.9}]
-/// spoken_languages : [{"english_name":"English","iso_639_1":"en","name":"English"}]
-/// status : "Returning Series"
-/// tagline : ""
-/// type : "Scripted"
-/// vote_average : 8.97
-/// vote_count : 994
-
 class TvSeriesDetails {
   TvSeriesDetails({
     bool? adult,
@@ -366,10 +333,6 @@ class TvSeriesDetails {
   }
 }
 
-/// english_name : "English"
-/// iso_639_1 : "en"
-/// name : "English"
-
 class SpokenLanguages {
   SpokenLanguages({
     String? englishName,
@@ -411,15 +374,6 @@ class SpokenLanguages {
     return map;
   }
 }
-
-/// air_date : "2019-10-28"
-/// episode_count : 2
-/// id : 199540
-/// name : "Specials"
-/// overview : ""
-/// poster_path : "/aYApV2vAn2bvY8HbkXHGbmG6FYS.jpg"
-/// season_number : 0
-/// vote_average : 0
 
 class Seasons {
   Seasons({
@@ -503,9 +457,6 @@ class Seasons {
   }
 }
 
-/// iso_3166_1 : "US"
-/// name : "United States of America"
-
 class ProductionCountries {
   ProductionCountries({
     String? iso31661,
@@ -539,11 +490,6 @@ class ProductionCountries {
     return map;
   }
 }
-
-/// id : 41077
-/// logo_path : "/1ZXsGaFPgrgS6ZZGS37AqD5uU12.png"
-/// name : "A24"
-/// origin_country : "US"
 
 class ProductionCompanies {
   ProductionCompanies({
@@ -595,11 +541,6 @@ class ProductionCompanies {
   }
 }
 
-/// id : 1024
-/// logo_path : "/ifhbNuuVnlwYy5oXA5VIb2YR8AZ.png"
-/// name : "Prime Video"
-/// origin_country : ""
-
 class Networks {
   Networks({
     num? id,
@@ -649,20 +590,6 @@ class Networks {
     return map;
   }
 }
-
-/// id : 4768894
-/// name : "The Show Must Go On"
-/// overview : "All bets are off as the confrontation between the legions of Heaven and Hell begins."
-/// vote_average : 7.375
-/// vote_count : 8
-/// air_date : "2024-02-01"
-/// episode_number : 8
-/// episode_type : "finale"
-/// production_code : "1BBHH08"
-/// runtime : 25
-/// season_number : 1
-/// show_id : 94954
-/// still_path : "/mVa6wxS7I7097HyMi1FGe38XrOm.jpg"
 
 class LastEpisodeToAir {
   LastEpisodeToAir({
@@ -786,9 +713,6 @@ class LastEpisodeToAir {
   }
 }
 
-/// id : 16
-/// name : "Animation"
-
 class Genres {
   Genres({
     num? id,
@@ -822,13 +746,6 @@ class Genres {
     return map;
   }
 }
-
-/// id : 1754390
-/// credit_id : "5db721ba27d9cc001813ccf5"
-/// name : "Vivienne Medrano"
-/// original_name : "Vivienne Medrano"
-/// gender : 1
-/// profile_path : null
 
 class CreatedBy {
   CreatedBy({

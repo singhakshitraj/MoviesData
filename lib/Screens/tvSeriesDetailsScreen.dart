@@ -1,9 +1,13 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:galleryimage/galleryimage.dart';
 import 'package:moviedb/API/endpoints.dart';
 import 'package:moviedb/API/serverCalls.dart';
+import 'package:moviedb/util/AggregateBlock.dart';
 import 'package:moviedb/util/Block.dart';
 import 'package:moviedb/util/style.dart';
+import 'package:shimmer/shimmer.dart';
 
 class TvSeriesDetailsScreen extends StatefulWidget {
   num id;
@@ -15,9 +19,17 @@ class TvSeriesDetailsScreen extends StatefulWidget {
 
 class _TvSeriesDetailsScreenState extends State<TvSeriesDetailsScreen> {
   late Future tvSeriesDetails;
+  late Future imageUrls;
+  late Future similar;
+  late Future recommendation;
   @override
   void initState() {
     tvSeriesDetails = ServerCalls().getTvSeriesDetails(widget.id.toString());
+    similar =
+        ServerCalls().getTvSeriesAdditional(widget.id.toString(), 'similar');
+    recommendation = ServerCalls()
+        .getTvSeriesAdditional(widget.id.toString(), 'recommendations');
+    imageUrls = ServerCalls().getImageUrls(widget.id.toString(), 'tv');
     super.initState();
   }
 
@@ -87,13 +99,12 @@ class _TvSeriesDetailsScreenState extends State<TvSeriesDetailsScreen> {
                       'Last Episode To Air',
                       style: style1,
                     ),
-                    SizedBox(
-                      height: 9,
-                    ),
+                    const SizedBox(height: 9),
                     Card(
                       child: Column(
                         children: [
                           ListTile(
+                            //tileColor: Colors.yellow[100],
                             leading: Text(
                               snapshot.data.lastEpisodeToAir.episodeNumber
                                   .toString(),
@@ -115,6 +126,96 @@ class _TvSeriesDetailsScreenState extends State<TvSeriesDetailsScreen> {
                               )),
                         ],
                       ),
+                    ),
+                    Text(
+                      'Images',
+                      style: style1,
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    Container(
+                      //height: 150,
+                      child: FutureBuilder(
+                        future: imageUrls,
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          } else {
+                            return GalleryImage(
+                              imageUrls: snapshot.data!,
+                              numOfShowImages: min(snapshot.data!.length, 3),
+                              colorOfNumberWidget: Colors.purple[300],
+                              titleGallery: 'Images',
+                              loadingWidget: Shimmer.fromColors(
+                                  baseColor: Colors.purple,
+                                  highlightColor: Colors.deepPurpleAccent,
+                                  child: const Card()),
+                              errorWidget: const Icon(Icons.error),
+                            );
+                          }
+                        },
+                      ),
+                    ),
+                    Text(
+                      'Similar',
+                      style: style1,
+                      textAlign: TextAlign.center,
+                    ),
+                    Container(
+                      height: 230,
+                      child: FutureBuilder(
+                          future: similar,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: snapshot.data!.length,
+                                  itemBuilder: (context, index) {
+                                    return AggregateBlock(
+                                      snapshot: snapshot,
+                                      index: index,
+                                      tv: -1,
+                                    );
+                                  });
+                            } else {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                          }),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      'Recommendation',
+                      style: style1,
+                      textAlign: TextAlign.center,
+                    ),
+                    Container(
+                      height: 230,
+                      child: FutureBuilder(
+                          future: recommendation,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: snapshot.data!.length,
+                                  itemBuilder: (context, index) {
+                                    return AggregateBlock(
+                                      snapshot: snapshot,
+                                      index: index,
+                                      tv: -1,
+                                    );
+                                  });
+                            } else {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                          }),
                     ),
                   ],
                 ),

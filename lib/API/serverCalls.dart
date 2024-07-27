@@ -103,10 +103,10 @@ class ServerCalls {
     return lis;
   }
 
-  Future<List<String>> getImageUrls(String id) async {
+  Future<List<String>> getImageUrls(String id, String additionalData) async {
     List<String> lis = [];
     String stringToParse =
-        '${Endpoints.baseUrl}/movie/$id/images${Endpoints.apiKey}';
+        '${Endpoints.baseUrl}/$additionalData/$id/images${Endpoints.apiKey}';
     final response = await http.get(Uri.parse(stringToParse));
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body)['backdrops'];
@@ -114,6 +114,19 @@ class ServerCalls {
         lis.add(
             Endpoints.baseImg + Backdrops.fromJson(val).filePath.toString());
       }
+    }
+    return lis;
+  }
+
+  Future<List<tvSeries.Results>> getTvSeriesAdditional(
+      String id, String additional) async {
+    List<tvSeries.Results> lis = [];
+    String stringToParse =
+        '${Endpoints.baseUrl}/tv/$id/$additional${Endpoints.apiKey}';
+    final response = await http.get(Uri.parse(stringToParse));
+    final data = jsonDecode(response.body)['results'];
+    for (Map value in data) {
+      lis.add(tvSeries.Results.fromJson(value));
     }
     return lis;
   }
