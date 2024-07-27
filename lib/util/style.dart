@@ -5,6 +5,7 @@ TextStyle style1 = const TextStyle(
   letterSpacing: 1.5,
   fontWeight: FontWeight.bold,
   decoration: TextDecoration.underline,
+  fontSize: 15,
 );
 
 EdgeInsetsGeometry constMargin = const EdgeInsets.only(left: 24, right: 24);
@@ -18,4 +19,9 @@ ButtonStyle elevatedButtonStyle = ElevatedButton.styleFrom(
   alignment: Alignment.center,
   foregroundColor: Colors.white,
   backgroundColor: Colors.black,
+);
+
+TextStyle style2 = TextStyle(
+  color: Colors.white,
+  fontSize: 12,
 );

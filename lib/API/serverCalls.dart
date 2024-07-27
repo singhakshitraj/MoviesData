@@ -6,6 +6,8 @@ import 'package:moviedb/Models/People.dart' as People;
 import 'package:moviedb/Models/tvSeries.dart' as tvSeries;
 import 'package:moviedb/Models/MovieDetails.dart';
 import 'package:moviedb/Models/tvSeriesDetails.dart' as tvSeriesDetails;
+import 'package:moviedb/Models/MovieReviews.dart' as MovieReviews;
+import 'package:moviedb/Models/ImageUrls.dart';
 
 class ServerCalls {
   Future<List<Movies.Results>> getMoviesData(String category) async {
@@ -85,5 +87,34 @@ class ServerCalls {
     final Response = await http.get(Uri.parse(toParse));
     final data = jsonDecode(Response.body.toString());
     return tvSeriesDetails.TvSeriesDetails.fromJson(data);
+  }
+
+  Future<List<MovieReviews.Results>> getMovieReviews(String id) async {
+    List<MovieReviews.Results> lis = [];
+    String stringToParse =
+        '${Endpoints.baseUrl}/movie/$id/reviews${Endpoints.apiKey}';
+    final response = await http.get(Uri.parse(stringToParse));
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body)['results'];
+      for (Map vals in data) {
+        lis.add(MovieReviews.Results.fromJson(vals));
+      }
+    }
+    return lis;
+  }
+
+  Future<List<String>> getImageUrls(String id) async {
+    List<String> lis = [];
+    String stringToParse =
+        '${Endpoints.baseUrl}/movie/$id/images${Endpoints.apiKey}';
+    final response = await http.get(Uri.parse(stringToParse));
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body)['backdrops'];
+      for (Map val in data) {
+        lis.add(
+            Endpoints.baseImg + Backdrops.fromJson(val).filePath.toString());
+      }
+    }
+    return lis;
   }
 }

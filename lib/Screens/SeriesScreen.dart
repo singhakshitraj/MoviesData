@@ -28,6 +28,10 @@ class _SeriesScreenState extends State<SeriesScreen> {
   late Future<List<tvSeries.Results>> tvPopular;
   late Future<List<tvSeries.Results>> tvTopRated;
   Endpoints ep = Endpoints();
+  _wait() async {
+    FlutterNativeSplash.remove();
+  }
+
   @override
   void initState() {
     trendingAll = ServerCalls().getMoviesData('all');
@@ -38,8 +42,7 @@ class _SeriesScreenState extends State<SeriesScreen> {
     onTheAir = ServerCalls().getSeriesData('on_the_air');
     tvPopular = ServerCalls().getSeriesData('popular');
     tvTopRated = ServerCalls().getSeriesData('top_rated');
-
-    FlutterNativeSplash.remove();
+    _wait();
     super.initState();
   }
 

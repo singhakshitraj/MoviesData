@@ -48,6 +48,5 @@ class _AggregateBlockState extends State<AggregateBlock> {
         },
       ),
     );
-    ;
   }
 }

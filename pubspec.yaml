@@ -12,6 +12,8 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_native_splash: ^2.4.1
+  galleryimage: ^2.0.1
+  google_fonts: ^6.2.1
   google_nav_bar: ^5.0.6
   http: ^1.2.1
   shimmer: ^3.0.0
