@@ -11,7 +11,7 @@ TextStyle style1 = const TextStyle(
 EdgeInsetsGeometry constMargin = const EdgeInsets.only(left: 24, right: 24);
 
 ButtonStyle elevatedButtonStyle = ElevatedButton.styleFrom(
-  padding: EdgeInsets.all(5),
+  padding: const EdgeInsets.all(5),
   shape: RoundedRectangleBorder(
     borderRadius: BorderRadius.circular(15),
   ),
@@ -21,7 +21,16 @@ ButtonStyle elevatedButtonStyle = ElevatedButton.styleFrom(
   backgroundColor: Colors.black,
 );
 
-TextStyle style2 = TextStyle(
+TextStyle style2 = const TextStyle(
   color: Colors.white,
   fontSize: 12,
 );
+
+InputDecoration textFieldDecoration = InputDecoration(
+    fillColor: Colors.white,
+    filled: true,
+    hintText: 'Search Query Here',
+    enabled: true,
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(32),
+    ));

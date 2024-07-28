@@ -45,9 +45,8 @@ class _TvSeriesDetailsScreenState extends State<TvSeriesDetailsScreen> {
           future: tvSeriesDetails,
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+              return Container(
+                  child: Center(child: CircularProgressIndicator()));
             } else {
               return SingleChildScrollView(
                 child: Column(
@@ -139,7 +138,7 @@ class _TvSeriesDetailsScreenState extends State<TvSeriesDetailsScreen> {
                         future: imageUrls,
                         builder: (context, snapshot) {
                           if (!snapshot.hasData) {
-                            return const Center(
+                            return Container(
                                 child: CircularProgressIndicator());
                           } else {
                             return GalleryImage(

@@ -7,9 +7,12 @@ import 'package:moviedb/API/serverCalls.dart';
 import 'package:moviedb/Models/Movies.dart' as Movies;
 import 'package:moviedb/Models/People.dart' as People;
 import 'package:moviedb/Models/tvSeries.dart' as tvSeries;
+import 'package:moviedb/Screens/SearchScreen.dart';
 import 'package:moviedb/util/AggregateBlock.dart';
 import 'package:moviedb/util/style.dart';
+import 'package:page_animation_transition/animations/right_to_left_faded_transition.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:page_animation_transition/page_animation_transition.dart';
 
 class SeriesScreen extends StatefulWidget {
   const SeriesScreen({super.key});
@@ -50,9 +53,21 @@ class _SeriesScreenState extends State<SeriesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          actions: [
+            IconButton(
+                onPressed: () {
+                  Navigator.of(context).push(PageAnimationTransition(
+                    page: SearchScreen(),
+                    pageAnimationType: RightToLeftFadedTransition(),
+                  ));
+                },
+                icon: const Icon(Icons.search)),
+          ],
           elevation: 11,
-          title: const Text(
-            'Movies',
+          title: Text(
+            'Welcome !! ',
+            style:
+                TextStyle(wordSpacing: 1.5, letterSpacing: 1.5, fontSize: 25),
           ),
         ),
         drawer: const Drawer(),
@@ -87,6 +102,7 @@ class _SeriesScreenState extends State<SeriesScreen> {
                             options: CarouselOptions(
                               disableCenter: true,
                               animateToClosest: true,
+                              autoPlay: true,
                             ));
                       }
                     }),
