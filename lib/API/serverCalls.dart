@@ -111,8 +111,8 @@ class ServerCalls {
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body)['backdrops'];
       for (Map val in data) {
-        lis.add(
-            Endpoints.baseImg + Backdrops.fromJson(val).filePath.toString());
+        lis.add(Endpoints.baseImgOriginal +
+            Backdrops.fromJson(val).filePath.toString());
       }
     }
     return lis;

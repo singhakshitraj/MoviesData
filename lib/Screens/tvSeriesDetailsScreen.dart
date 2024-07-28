@@ -135,7 +135,6 @@ class _TvSeriesDetailsScreenState extends State<TvSeriesDetailsScreen> {
                       height: 12,
                     ),
                     Container(
-                      //height: 150,
                       child: FutureBuilder(
                         future: imageUrls,
                         builder: (context, snapshot) {

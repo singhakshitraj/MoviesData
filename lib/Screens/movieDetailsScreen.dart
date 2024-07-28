@@ -45,7 +45,6 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
         child: Column(
           children: [
             Container(
-              height: 600,
               child: FutureBuilder(
                   future: movieDetails,
                   builder: (context, snapshot) {
@@ -56,28 +55,23 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                     } else {
                       return Column(
                         children: [
-                          Expanded(
-                            flex: 5,
+                          Container(
+                            height: 300,
                             child: Block(
                                 imageURL: Endpoints.baseImg +
                                     snapshot.data!.backdropPath.toString()),
                           ),
-                          Expanded(
-                            child: ListTile(
-                              leading: const Text(''),
-                              title: Text(
-                                snapshot.data!.originalTitle.toString(),
-                                style: style1,
-                              ),
-                              subtitle: Text(snapshot.data!.tagline.toString()),
+                          ListTile(
+                            leading: const Text(''),
+                            title: Text(
+                              snapshot.data!.originalTitle.toString(),
+                              style: style1,
                             ),
+                            subtitle: Text(snapshot.data!.tagline.toString()),
                           ),
-                          Expanded(
-                            flex: 2,
-                            child: Container(
-                              margin: constMargin,
-                              child: Text(snapshot.data!.overview.toString()),
-                            ),
+                          Container(
+                            margin: constMargin,
+                            child: Text(snapshot.data!.overview.toString()),
                           ),
                           const SizedBox(height: 8),
                           Container(
@@ -106,7 +100,6 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 8),
                         ],
                       );
                     }
