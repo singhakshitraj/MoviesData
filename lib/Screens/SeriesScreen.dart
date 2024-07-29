@@ -64,7 +64,7 @@ class _SeriesScreenState extends State<SeriesScreen> {
                 icon: const Icon(Icons.search)),
           ],
           elevation: 11,
-          title: Text(
+          title: const Text(
             'Welcome !! ',
             style:
                 TextStyle(wordSpacing: 1.5, letterSpacing: 1.5, fontSize: 25),
