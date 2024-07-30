@@ -22,8 +22,10 @@ class _AggregateBlockState extends State<AggregateBlock> {
   Widget build(BuildContext context) {
     return Container(
       child: Block(
-        imageURL: Endpoints.baseImg +
-            widget.snapshot.data![widget.index].posterPath.toString(),
+        imageURL: (widget.snapshot.data[widget.index].posterPath == null)
+            ? Endpoints.blankImage
+            : Endpoints.baseImg +
+                widget.snapshot.data![widget.index].posterPath.toString(),
         onTap: () {
           if (widget.tv != null && widget.tv == -1) {
             Navigator.of(context).push(PageAnimationTransition(

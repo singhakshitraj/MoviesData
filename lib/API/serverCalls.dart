@@ -14,7 +14,7 @@ class ServerCalls {
   Future<List<Movies.Results>> getMoviesData(String category) async {
     List<Movies.Results> lis = [];
     String stringToParse =
-        '${Endpoints.baseTrending}$category/week${Endpoints.apiKey}';
+        '${Endpoints.baseTrending}$category/day${Endpoints.apiKey}';
     final response = await http.get(Uri.parse(stringToParse));
     if (response.statusCode == 200) {
       print('Success');
