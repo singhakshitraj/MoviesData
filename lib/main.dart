@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:moviedb/API/auth.dart';
-import 'package:moviedb/Screens/SeriesScreen.dart';
+import 'package:moviedb/Screens/auth_screen.dart';
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  final x = await Auth().requestToken();
-  print(x);
   runApp(const MainApp());
 }
 
@@ -18,7 +15,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SeriesScreen(),
+      home: const AuthScreen(),
       theme: ThemeData(
         cardColor: Colors.white,
         appBarTheme: const AppBarTheme(

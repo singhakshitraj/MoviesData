@@ -19,6 +19,7 @@ dependencies:
   loading_animation_widget: ^1.2.1
   page_animation_transition: ^1.0.0
   shimmer: ^3.0.0
+  url_launcher: ^6.3.0
 
 dev_dependencies:
   flutter_test:
