@@ -37,189 +37,213 @@ class _TvSeriesDetailsScreenState extends State<TvSeriesDetailsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(''),
+        title: const Text(''),
         centerTitle: true,
         titleSpacing: 1.5,
       ),
-      body: FutureBuilder(
-          future: tvSeriesDetails,
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return Container(
-                  child: Center(child: CircularProgressIndicator()));
-            } else {
-              return SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Container(
-                      height: 300,
-                      child: Block(
-                          imageURL: Endpoints.baseImg +
-                              snapshot.data.backdropPath.toString()),
-                    ),
-                    ListTile(
-                      leading: const Text(''),
-                      title: Text(
-                        snapshot.data!.originalName.toString(),
-                        style: style1,
+      body: Container(
+        color: Colors.purple[50],
+        child: FutureBuilder(
+            future: tvSeriesDetails,
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return const Center(child: CircularProgressIndicator());
+              } else {
+                return SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 300,
+                        child: Block(
+                            imageURL: Endpoints.baseImg +
+                                snapshot.data.backdropPath.toString()),
                       ),
-                      subtitle: Text(snapshot.data!.tagline.toString()),
-                    ),
-                    Container(
-                      margin: constMargin,
-                      child: Text(snapshot.data!.overview.toString()),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 10, bottom: 10),
-                      height: 50,
-                      child: ListView.separated(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: snapshot.data!.genres.length,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            margin: const EdgeInsets.only(left: 25),
-                            child: ElevatedButton(
-                              onPressed: () {},
-                              style: elevatedButtonStyle,
-                              child: Text(
-                                snapshot.data.genres[index].name,
+                      ListTile(
+                        leading: const Text(''),
+                        title: Text(
+                          snapshot.data!.originalName.toString(),
+                          style: style1,
+                        ),
+                        subtitle: Text(snapshot.data!.tagline.toString()),
+                      ),
+                      Container(
+                        margin: constMargin,
+                        child: Text(snapshot.data!.overview.toString()),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(top: 10, bottom: 10),
+                        height: 50,
+                        child: ListView.separated(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: snapshot.data!.genres.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              margin: const EdgeInsets.only(left: 25),
+                              child: ElevatedButton(
+                                onPressed: () {},
+                                style: elevatedButtonStyle,
+                                child: Text(
+                                  snapshot.data.genres[index].name,
+                                ),
                               ),
-                            ),
-                          );
-                        },
-                        separatorBuilder: (BuildContext context, int index) =>
-                            const Divider(
-                          height: 20,
-                          thickness: 10,
+                            );
+                          },
+                          separatorBuilder: (BuildContext context, int index) =>
+                              const Divider(
+                            height: 20,
+                            thickness: 10,
+                          ),
                         ),
                       ),
-                    ),
-                    Text(
-                      'Last Episode To Air',
-                      style: style1,
-                    ),
-                    const SizedBox(height: 9),
-                    Card(
-                      child: Column(
-                        children: [
-                          ListTile(
-                            //tileColor: Colors.yellow[100],
-                            leading: Text(
-                              snapshot.data.lastEpisodeToAir.episodeNumber
-                                  .toString(),
-                            ),
-                            title: Text(
-                              snapshot.data.lastEpisodeToAir.name.toString(),
-                              style: style1,
-                            ),
-                            subtitle: Text(
-                                'Date Aired - ${snapshot.data.lastEpisodeToAir.airDate}'),
-                          ),
-                          Container(
-                              margin: constMargin.add(
-                                const EdgeInsets.only(bottom: 24),
-                              ),
-                              child: Text(
-                                snapshot.data.lastEpisodeToAir.overview
+                      Text(
+                        'Last Episode To Air',
+                        style: style1,
+                      ),
+                      const SizedBox(height: 9),
+                      Card(
+                        color: Colors.purple[200],
+                        margin: const EdgeInsets.only(
+                          left: 10,
+                          right: 10,
+                          bottom: 10,
+                        ),
+                        child: Column(
+                          children: [
+                            ListTile(
+                              leading: Text(
+                                snapshot.data.lastEpisodeToAir.episodeNumber
                                     .toString(),
-                              )),
-                        ],
+                              ),
+                              title: Text(
+                                snapshot.data.lastEpisodeToAir.name.toString(),
+                                style: style1,
+                              ),
+                              subtitle: Text(
+                                  'Date Aired - ${snapshot.data.lastEpisodeToAir.airDate}'),
+                            ),
+                            Container(
+                                margin: constMargin.add(
+                                  const EdgeInsets.only(bottom: 24),
+                                ),
+                                child: Text(
+                                  snapshot.data.lastEpisodeToAir.overview
+                                      .toString(),
+                                )),
+                          ],
+                        ),
                       ),
-                    ),
-                    Text(
-                      'Images',
-                      style: style1,
-                    ),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    Container(
-                      child: FutureBuilder(
-                        future: imageUrls,
-                        builder: (context, snapshot) {
-                          if (!snapshot.hasData) {
-                            return Container(
-                                child: CircularProgressIndicator());
-                          } else {
-                            return GalleryImage(
-                              imageUrls: snapshot.data!,
-                              numOfShowImages: min(snapshot.data!.length, 3),
-                              colorOfNumberWidget: Colors.purple[300],
-                              titleGallery: 'Images',
-                              loadingWidget: Shimmer.fromColors(
-                                  baseColor: Colors.purple,
-                                  highlightColor: Colors.deepPurpleAccent,
-                                  child: const Card()),
-                              errorWidget: const Icon(Icons.error),
-                            );
-                          }
-                        },
+                      Text(
+                        'Images',
+                        style: style1,
                       ),
-                    ),
-                    Text(
-                      'Similar',
-                      style: style1,
-                      textAlign: TextAlign.center,
-                    ),
-                    Container(
-                      height: 230,
-                      child: FutureBuilder(
-                          future: similar,
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      Container(
+                        child: FutureBuilder(
+                          future: imageUrls,
                           builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              return ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: snapshot.data!.length,
-                                  itemBuilder: (context, index) {
-                                    return AggregateBlock(
-                                      snapshot: snapshot,
-                                      index: index,
-                                      tv: -1,
-                                    );
-                                  });
+                            if (!snapshot.hasData) {
+                              return Container(
+                                  child: const CircularProgressIndicator());
                             } else {
-                              return const Center(
-                                child: CircularProgressIndicator(),
+                              if (snapshot.data!.isEmpty) {
+                                return Container(
+                                  height: 150,
+                                  child: const Center(
+                                      child: Text('No Images Available')),
+                                );
+                              }
+                              return GalleryImage(
+                                imageUrls: snapshot.data!,
+                                numOfShowImages: min(snapshot.data!.length, 3),
+                                colorOfNumberWidget: Colors.purple[300],
+                                titleGallery: 'Images',
+                                loadingWidget: Shimmer.fromColors(
+                                    baseColor: Colors.purple,
+                                    highlightColor: Colors.deepPurpleAccent,
+                                    child: const Card()),
+                                errorWidget: const Icon(Icons.error),
                               );
                             }
-                          }),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      'Recommendation',
-                      style: style1,
-                      textAlign: TextAlign.center,
-                    ),
-                    Container(
-                      height: 230,
-                      child: FutureBuilder(
-                          future: recommendation,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              return ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: snapshot.data!.length,
-                                  itemBuilder: (context, index) {
-                                    return AggregateBlock(
-                                      snapshot: snapshot,
-                                      index: index,
-                                      tv: -1,
-                                    );
-                                  });
-                            } else {
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            }
-                          }),
-                    ),
-                  ],
-                ),
-              );
-            }
-          }),
+                          },
+                        ),
+                      ),
+                      Text(
+                        'Similar',
+                        style: style1,
+                        textAlign: TextAlign.center,
+                      ),
+                      Container(
+                        height: 230,
+                        child: FutureBuilder(
+                            future: similar,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                if (snapshot.data!.isEmpty) {
+                                  return const Center(
+                                      child:
+                                          Text('No Similar Items Available'));
+                                }
+                                return ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: snapshot.data!.length,
+                                    itemBuilder: (context, index) {
+                                      return AggregateBlock(
+                                        snapshot: snapshot,
+                                        index: index,
+                                        tv: -1,
+                                      );
+                                    });
+                              } else {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                            }),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        'Recommendation',
+                        style: style1,
+                        textAlign: TextAlign.center,
+                      ),
+                      Container(
+                        height: 230,
+                        child: FutureBuilder(
+                            future: recommendation,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                if (snapshot.data!.isEmpty) {
+                                  return const Center(
+                                      child:
+                                          Text('No Recommendations Available'));
+                                }
+                                return ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: snapshot.data!.length,
+                                    itemBuilder: (context, index) {
+                                      return AggregateBlock(
+                                        snapshot: snapshot,
+                                        index: index,
+                                        tv: -1,
+                                      );
+                                    });
+                              } else {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                            }),
+                      ),
+                    ],
+                  ),
+                );
+              }
+            }),
+      ),
     );
   }
 }
