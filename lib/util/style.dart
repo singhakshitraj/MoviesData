@@ -15,7 +15,7 @@ ButtonStyle elevatedButtonStyle = ElevatedButton.styleFrom(
   shape: RoundedRectangleBorder(
     borderRadius: BorderRadius.circular(15),
   ),
-  elevation: 30,
+  elevation: 0,
   alignment: Alignment.center,
   foregroundColor: Colors.white,
   backgroundColor: Colors.black,
@@ -28,7 +28,7 @@ ButtonStyle elevatedButtonStyle2(double width, double height) {
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(15),
     ),
-    elevation: 100,
+    elevation: 0,
     alignment: Alignment.center,
     foregroundColor: Colors.black,
     backgroundColor: Colors.white,

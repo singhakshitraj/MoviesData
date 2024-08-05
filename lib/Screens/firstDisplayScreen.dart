@@ -4,9 +4,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:moviedb/API/endpoints.dart';
 import 'package:moviedb/API/serverCalls.dart';
-import 'package:moviedb/Models/Movies.dart' as Movies;
-import 'package:moviedb/Models/People.dart' as People;
-import 'package:moviedb/Models/tvSeries.dart' as tvSeries;
+import 'package:moviedb/Models/Movies.dart' as movies;
+import 'package:moviedb/Models/People.dart' as people;
+import 'package:moviedb/Models/tvSeries.dart' as tv_series;
 import 'package:moviedb/Screens/SearchScreen.dart';
 import 'package:moviedb/util/AggregateBlock.dart';
 import 'package:moviedb/util/style.dart';
@@ -22,14 +22,14 @@ class FirstDisplayScreen extends StatefulWidget {
 }
 
 class _FirstDisplayScreenState extends State<FirstDisplayScreen> {
-  late Future<List<Movies.Results>> trendingAll;
-  late Future<List<Movies.Results>> trendingMovie;
-  late Future<List<Movies.Results>> trendingTv;
-  late Future<List<People.Results>> trendingPeople;
-  late Future<List<tvSeries.Results>> airingToday;
-  late Future<List<tvSeries.Results>> onTheAir;
-  late Future<List<tvSeries.Results>> tvPopular;
-  late Future<List<tvSeries.Results>> tvTopRated;
+  late Future<List<movies.Results>> trendingAll;
+  late Future<List<movies.Results>> trendingMovie;
+  late Future<List<movies.Results>> trendingTv;
+  late Future<List<people.Results>> trendingPeople;
+  late Future<List<tv_series.Results>> airingToday;
+  late Future<List<tv_series.Results>> onTheAir;
+  late Future<List<tv_series.Results>> tvPopular;
+  late Future<List<tv_series.Results>> tvTopRated;
   Endpoints ep = Endpoints();
   _wait() async {
     FlutterNativeSplash.remove();
@@ -86,7 +86,7 @@ class _FirstDisplayScreenState extends State<FirstDisplayScreen> {
                   textAlign: TextAlign.center,
                 ),
                 Container(
-                  height: 420,
+                  height: MediaQuery.of(context).size.height * 0.60,
                   child: FutureBuilder(
                       future: trendingAll,
                       builder: (context, snapshot) {

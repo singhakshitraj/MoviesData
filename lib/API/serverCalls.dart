@@ -17,7 +17,6 @@ class ServerCalls {
         '${Endpoints.baseTrending}$category/day${Endpoints.apiKey}';
     final response = await http.get(Uri.parse(stringToParse));
     if (response.statusCode == 200) {
-      print('Success');
       final data = jsonDecode(response.body)['results'];
       for (Map val in data) {
         lis.add(Movies.Results.fromJson(val));
@@ -32,14 +31,11 @@ class ServerCalls {
         '${Endpoints.baseTrending}person/week${Endpoints.apiKey}';
     final response = await http.get(Uri.parse(stringToParse));
     if (response.statusCode == 200) {
-      print('Success');
       final data = jsonDecode(response.body)['results'];
       for (Map val in data) {
         lis.add(People.Results.fromJson(val));
       }
-    } else {
-      print("Error");
-    }
+    } else {}
     return lis;
   }
 
@@ -52,9 +48,7 @@ class ServerCalls {
       for (Map val in data) {
         lis.add(tvSeries.Results.fromJson(val));
       }
-    } else {
-      print('Error');
-    }
+    } else {}
     return lis;
   }
 
@@ -72,14 +66,11 @@ class ServerCalls {
         '${Endpoints.baseUrl}/movie/$id/$additionalItem${Endpoints.apiKey}';
     final response = await http.get(Uri.parse(stringToParse));
     if (response.statusCode == 200) {
-      print('Successfully Hit');
       final data = jsonDecode(response.body)['results'];
       for (Map val in data) {
         lis.add(Movies.Results.fromJson(val));
       }
-    } else {
-      print('Not Hit');
-    }
+    } else {}
     return lis;
   }
 

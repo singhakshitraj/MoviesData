@@ -8,10 +8,8 @@ class Auth {
         .get(Uri.parse("${Endpoints.authSession}token/new${Endpoints.apiKey}"));
     if (response.statusCode == 200) {
       final tokenId = jsonDecode(response.body)['request_token'] as String;
-      //print(tokenId);
       return tokenId;
     } else {
-      print('Unsuccessful');
       return '';
     }
   }
@@ -25,12 +23,9 @@ class Auth {
       if (data['success'] == true) {
         return data['session_id'];
       } else {
-        print('Not Successful');
         return '-1';
       }
     } else {
-      print('Response Error');
-      print(response.statusCode);
       return '-1';
     }
   }

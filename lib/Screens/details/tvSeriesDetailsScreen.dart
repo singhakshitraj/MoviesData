@@ -37,9 +37,13 @@ class _TvSeriesDetailsScreenState extends State<TvSeriesDetailsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(''),
-        centerTitle: true,
-        titleSpacing: 1.5,
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.popUntil(context, (route) => route.isFirst);
+              },
+              icon: const Icon(Icons.home)),
+        ],
       ),
       body: Container(
         color: Colors.purple[50],
@@ -66,9 +70,12 @@ class _TvSeriesDetailsScreenState extends State<TvSeriesDetailsScreen> {
                         ),
                         subtitle: Text(snapshot.data!.tagline.toString()),
                       ),
-                      Container(
-                        margin: constMargin,
-                        child: Text(snapshot.data!.overview.toString()),
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Container(
+                          margin: constMargin,
+                          child: Text(snapshot.data!.overview.toString()),
+                        ),
                       ),
                       Container(
                         margin: const EdgeInsets.only(top: 10, bottom: 10),

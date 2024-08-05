@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:moviedb/API/auth.dart';
 import 'package:moviedb/API/endpoints.dart';
-import 'package:moviedb/Screens/auth/next_auth.dart';
+import 'package:moviedb/util/style.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -14,13 +14,17 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   bool canLaunch = true;
   late String token;
+
+  Future<String> _matchIDs(String token) async {
+    final isSuccess = await Auth().createSession(token);
+    return isSuccess;
+  }
+
   _displayToUser() async {
     token = await Auth().requestToken();
-    print('Initial - $token');
     final Uri url = Uri.parse("${Endpoints.authRedirectUrl}$token");
     if (canLaunch) {
       canLaunch = false;
-      Future.delayed(const Duration(seconds: 7));
       await launchUrl(url);
     }
   }
@@ -43,7 +47,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        'Please wait while it is being Loaded',
+                        'Please wait while you\'ll be redirected',
                         style: TextStyle(color: Colors.white),
                       ),
                       SizedBox(
@@ -59,16 +63,55 @@ class _AuthScreenState extends State<AuthScreen> {
             );
           } else {
             return Center(
-                child: ElevatedButton(
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                    style: elevatedButtonStyle2(250, 40).copyWith(
+                        foregroundColor:
+                            const WidgetStatePropertyAll(Colors.white),
+                        backgroundColor:
+                            const WidgetStatePropertyAll(Colors.black)),
                     onPressed: () async {
-                      Navigator.of(context)
-                          .push(MaterialPageRoute(builder: (context) {
-                        return NextAuth(
-                          token: token,
-                        );
-                      }));
+                      final urlToLaunch =
+                          Uri.parse("${Endpoints.authRedirectUrl}$token");
+                      await launchUrl(urlToLaunch);
                     },
-                    child: const Text('Authenticated On Browser?')));
+                    child: const Text('Redirect Again !!')),
+                const SizedBox(height: 30),
+                ElevatedButton(
+                    style: elevatedButtonStyle2(250, 40).copyWith(
+                        foregroundColor:
+                            const WidgetStatePropertyAll(Colors.white),
+                        backgroundColor:
+                            const WidgetStatePropertyAll(Colors.black)),
+                    onPressed: () async {
+                      final vals = await _matchIDs(token);
+                      if (vals == '-1') {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: const Text(
+                                    'Error! Make Sure You Have Authenticated On The Provided Link.'),
+                                actions: [
+                                  ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text('OKAY')),
+                                ],
+                              );
+                            });
+                      } else {
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, '/toFirstDisplay/', (_) => false);
+                      }
+                    },
+                    child: const Text('Authenticated On Browser?'))
+              ],
+            ));
           }
         },
       ),

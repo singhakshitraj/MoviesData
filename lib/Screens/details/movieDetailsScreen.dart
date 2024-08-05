@@ -40,7 +40,15 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.popUntil(context, (route) => route.isFirst);
+              },
+              icon: const Icon(Icons.home)),
+        ],
+      ),
       body: Container(
         color: Colors.purple[50],
         child: FutureBuilder(
@@ -70,9 +78,12 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                         ),
                         subtitle: Text(snapshot.data!.tagline.toString()),
                       ),
-                      Container(
-                        margin: constMargin,
-                        child: Text(snapshot.data!.overview.toString()),
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Container(
+                          margin: constMargin,
+                          child: Text(snapshot.data!.overview.toString()),
+                        ),
                       ),
                       const SizedBox(height: 8),
                       Container(
@@ -134,7 +145,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(12)),
-                                            leading: Icon(
+                                            leading: const Icon(
                                               Icons.person,
                                               color: Colors.white,
                                             ),
