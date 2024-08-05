@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:moviedb/API/endpoints.dart';
-import 'package:moviedb/Screens/movieDetailsScreen.dart';
-import 'package:moviedb/Screens/tvSeriesDetailsScreen.dart';
+import 'package:moviedb/Screens/details/movieDetailsScreen.dart';
+import 'package:moviedb/Screens/details/tvSeriesDetailsScreen.dart';
 import 'package:moviedb/util/Block.dart';
 import 'package:page_animation_transition/animations/right_to_left_faded_transition.dart';
 import 'package:page_animation_transition/page_animation_transition.dart';

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:moviedb/API/auth.dart';
 import 'package:moviedb/API/endpoints.dart';
-import 'package:moviedb/Screens/next_auth.dart';
+import 'package:moviedb/Screens/auth/next_auth.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -16,7 +15,6 @@ class _AuthScreenState extends State<AuthScreen> {
   bool canLaunch = true;
   late String token;
   _displayToUser() async {
-    FlutterNativeSplash.remove();
     token = await Auth().requestToken();
     print('Initial - $token');
     final Uri url = Uri.parse("${Endpoints.authRedirectUrl}$token");

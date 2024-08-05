@@ -1,57 +1,53 @@
 import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:galleryimage/galleryimage.dart';
 import 'package:moviedb/API/endpoints.dart';
 import 'package:moviedb/API/serverCalls.dart';
-import 'package:moviedb/Models/Movies.dart' as Movies;
 import 'package:moviedb/util/AggregateBlock.dart';
 import 'package:moviedb/util/Block.dart';
 import 'package:moviedb/util/style.dart';
-import 'package:moviedb/Models/MovieReviews.dart' as MovieReviews;
-import 'package:galleryimage/galleryimage.dart';
 import 'package:shimmer/shimmer.dart';
 
-class MovieDetailsScreen extends StatefulWidget {
+class TvSeriesDetailsScreen extends StatefulWidget {
   num id;
-  MovieDetailsScreen({super.key, required this.id});
+  TvSeriesDetailsScreen({super.key, required this.id});
 
   @override
-  State<MovieDetailsScreen> createState() => _MovieDetailsScreenState();
+  State<TvSeriesDetailsScreen> createState() => _TvSeriesDetailsScreenState();
 }
 
-class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
-  late Future movieDetails;
-  late Future<List<Movies.Results>> similar;
-  late Future<List<Movies.Results>> recommendation;
-  late Future<List<MovieReviews.Results>> reviews;
-  late Future<List<String>> imageUrls;
-
+class _TvSeriesDetailsScreenState extends State<TvSeriesDetailsScreen> {
+  late Future tvSeriesDetails;
+  late Future imageUrls;
+  late Future similar;
+  late Future recommendation;
   @override
   void initState() {
-    movieDetails = ServerCalls().getMovieDetails(widget.id.toString());
+    tvSeriesDetails = ServerCalls().getTvSeriesDetails(widget.id.toString());
     similar =
-        ServerCalls().getMoviesAdditionalData(widget.id.toString(), 'similar');
+        ServerCalls().getTvSeriesAdditional(widget.id.toString(), 'similar');
     recommendation = ServerCalls()
-        .getMoviesAdditionalData(widget.id.toString(), 'recommendations');
-    reviews = ServerCalls().getMovieReviews(widget.id.toString());
-    imageUrls = ServerCalls().getImageUrls(widget.id.toString(), 'movie');
+        .getTvSeriesAdditional(widget.id.toString(), 'recommendations');
+    imageUrls = ServerCalls().getImageUrls(widget.id.toString(), 'tv');
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text(''),
+        centerTitle: true,
+        titleSpacing: 1.5,
+      ),
       body: Container(
         color: Colors.purple[50],
         child: FutureBuilder(
-            future: movieDetails,
+            future: tvSeriesDetails,
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
-                return Container(
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                );
+                return const Center(child: CircularProgressIndicator());
               } else {
                 return SingleChildScrollView(
                   child: Column(
@@ -60,12 +56,12 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                         height: 300,
                         child: Block(
                             imageURL: Endpoints.baseImg +
-                                snapshot.data!.backdropPath.toString()),
+                                snapshot.data.backdropPath.toString()),
                       ),
                       ListTile(
                         leading: const Text(''),
                         title: Text(
-                          snapshot.data!.originalTitle.toString(),
+                          snapshot.data!.originalName.toString(),
                           style: style1,
                         ),
                         subtitle: Text(snapshot.data!.tagline.toString()),
@@ -74,7 +70,6 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                         margin: constMargin,
                         child: Text(snapshot.data!.overview.toString()),
                       ),
-                      const SizedBox(height: 8),
                       Container(
                         margin: const EdgeInsets.only(top: 10, bottom: 10),
                         height: 50,
@@ -83,7 +78,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                           itemCount: snapshot.data!.genres.length,
                           itemBuilder: (context, index) {
                             return Container(
-                              margin: const EdgeInsets.only(left: 25),
+                              margin: const EdgeInsets.only(left: 15),
                               child: ElevatedButton(
                                 onPressed: () {},
                                 style: elevatedButtonStyle,
@@ -101,72 +96,52 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                         ),
                       ),
                       Text(
-                        'Reviews',
+                        'Last Episode To Air',
                         style: style1,
                       ),
-                      Container(
-                        height: 150,
-                        width: MediaQuery.of(context).size.width,
-                        child: FutureBuilder(
-                            future: reviews,
-                            builder: (context, snapshot) {
-                              if (!snapshot.hasData) {
-                                return const Center(
-                                    child: CircularProgressIndicator());
-                              } else {
-                                if (snapshot.data!.isEmpty) {
-                                  return const Center(
-                                      child: Text('No Reviews Available'));
-                                }
-                                return ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    padding: const EdgeInsets.only(top: 8),
-                                    itemCount: snapshot.data!.length,
-                                    itemBuilder: (context, index) {
-                                      return Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.9,
-                                        margin: const EdgeInsets.all(15),
-                                        child: Card(
-                                          color: Colors.purple[500],
-                                          child: ListTile(
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(12)),
-                                            leading: Image.asset(
-                                                'lib/Assets/contact.png'),
-                                            title: Text(
-                                              snapshot.data![index].author
-                                                  .toString(),
-                                              style: const TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                            subtitle: Text(
-                                              '${snapshot.data![index].content.toString().replaceAll('\r', '').replaceAll('\n', ' ').substring(0, min(200, snapshot.data![index].content.toString().length)).replaceAll('\n', ' ')}...',
-                                              style: style2,
-                                            ),
-                                          ),
-                                        ),
-                                      );
-                                    });
-                              }
-                            }),
+                      const SizedBox(height: 15),
+                      Card(
+                        color: Colors.purple[200],
+                        margin: const EdgeInsets.only(
+                          left: 10,
+                          right: 10,
+                          bottom: 10,
+                          top: 10,
+                        ),
+                        child: Column(
+                          children: [
+                            ListTile(
+                              leading: Text(
+                                snapshot.data.lastEpisodeToAir.episodeNumber
+                                    .toString(),
+                              ),
+                              title: Text(
+                                snapshot.data.lastEpisodeToAir.name.toString(),
+                                style: style1,
+                              ),
+                              subtitle: Text(
+                                  'Date Aired - ${snapshot.data.lastEpisodeToAir.airDate}'),
+                            ),
+                            Container(
+                                margin: constMargin.add(
+                                  const EdgeInsets.only(bottom: 24),
+                                ),
+                                child: Text(
+                                  snapshot.data.lastEpisodeToAir.overview
+                                      .toString(),
+                                )),
+                          ],
+                        ),
                       ),
-                      Text(
-                        'Images',
-                        style: style1,
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
+                      Text('Images', style: style1),
+                      const SizedBox(height: 12),
                       Container(
                         child: FutureBuilder(
                           future: imageUrls,
                           builder: (context, snapshot) {
                             if (!snapshot.hasData) {
-                              return const Center(
-                                  child: CircularProgressIndicator());
+                              return Container(
+                                  child: const CircularProgressIndicator());
                             } else {
                               if (snapshot.data!.isEmpty) {
                                 return Container(
@@ -190,21 +165,21 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                           },
                         ),
                       ),
-                      Text(
-                        'Similar',
-                        style: style1,
-                        textAlign: TextAlign.center,
-                      ),
+                      const SizedBox(height: 12),
+                      Text('Similar',
+                          style: style1, textAlign: TextAlign.center),
+                      const SizedBox(height: 12),
                       Container(
                         height: 230,
                         child: FutureBuilder(
                             future: similar,
                             builder: (context, snapshot) {
-                              if (snapshot.data!.isEmpty) {
-                                return const Center(
-                                    child: Text('No Similar Movies Available'));
-                              }
                               if (snapshot.hasData) {
+                                if (snapshot.data!.isEmpty) {
+                                  return const Center(
+                                      child:
+                                          Text('No Similar Items Available'));
+                                }
                                 return ListView.builder(
                                     scrollDirection: Axis.horizontal,
                                     itemCount: snapshot.data!.length,
@@ -212,7 +187,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                       return AggregateBlock(
                                         snapshot: snapshot,
                                         index: index,
-                                        tv: 0,
+                                        tv: -1,
                                       );
                                     });
                               } else {
@@ -222,14 +197,13 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                               }
                             }),
                       ),
-                      const SizedBox(
-                        height: 10,
-                      ),
+                      const SizedBox(height: 12),
                       Text(
                         'Recommendation',
                         style: style1,
                         textAlign: TextAlign.center,
                       ),
+                      const SizedBox(height: 12),
                       Container(
                         height: 230,
                         child: FutureBuilder(
@@ -248,7 +222,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                       return AggregateBlock(
                                         snapshot: snapshot,
                                         index: index,
-                                        tv: 0,
+                                        tv: -1,
                                       );
                                     });
                               } else {

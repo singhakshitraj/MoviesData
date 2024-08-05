@@ -14,14 +14,14 @@ import 'package:page_animation_transition/animations/right_to_left_faded_transit
 import 'package:shimmer/shimmer.dart';
 import 'package:page_animation_transition/page_animation_transition.dart';
 
-class SeriesScreen extends StatefulWidget {
-  const SeriesScreen({super.key});
+class FirstDisplayScreen extends StatefulWidget {
+  const FirstDisplayScreen({super.key});
 
   @override
-  State<SeriesScreen> createState() => _SeriesScreenState();
+  State<FirstDisplayScreen> createState() => _FirstDisplayScreenState();
 }
 
-class _SeriesScreenState extends State<SeriesScreen> {
+class _FirstDisplayScreenState extends State<FirstDisplayScreen> {
   late Future<List<Movies.Results>> trendingAll;
   late Future<List<Movies.Results>> trendingMovie;
   late Future<List<Movies.Results>> trendingTv;

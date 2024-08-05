@@ -1,53 +1,57 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:galleryimage/galleryimage.dart';
 import 'package:moviedb/API/endpoints.dart';
 import 'package:moviedb/API/serverCalls.dart';
+import 'package:moviedb/Models/Movies.dart' as Movies;
 import 'package:moviedb/util/AggregateBlock.dart';
 import 'package:moviedb/util/Block.dart';
 import 'package:moviedb/util/style.dart';
+import 'package:moviedb/Models/MovieReviews.dart' as MovieReviews;
+import 'package:galleryimage/galleryimage.dart';
 import 'package:shimmer/shimmer.dart';
 
-class TvSeriesDetailsScreen extends StatefulWidget {
+class MovieDetailsScreen extends StatefulWidget {
   num id;
-  TvSeriesDetailsScreen({super.key, required this.id});
+  MovieDetailsScreen({super.key, required this.id});
 
   @override
-  State<TvSeriesDetailsScreen> createState() => _TvSeriesDetailsScreenState();
+  State<MovieDetailsScreen> createState() => _MovieDetailsScreenState();
 }
 
-class _TvSeriesDetailsScreenState extends State<TvSeriesDetailsScreen> {
-  late Future tvSeriesDetails;
-  late Future imageUrls;
-  late Future similar;
-  late Future recommendation;
+class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
+  late Future movieDetails;
+  late Future<List<Movies.Results>> similar;
+  late Future<List<Movies.Results>> recommendation;
+  late Future<List<MovieReviews.Results>> reviews;
+  late Future<List<String>> imageUrls;
+
   @override
   void initState() {
-    tvSeriesDetails = ServerCalls().getTvSeriesDetails(widget.id.toString());
+    movieDetails = ServerCalls().getMovieDetails(widget.id.toString());
     similar =
-        ServerCalls().getTvSeriesAdditional(widget.id.toString(), 'similar');
+        ServerCalls().getMoviesAdditionalData(widget.id.toString(), 'similar');
     recommendation = ServerCalls()
-        .getTvSeriesAdditional(widget.id.toString(), 'recommendations');
-    imageUrls = ServerCalls().getImageUrls(widget.id.toString(), 'tv');
+        .getMoviesAdditionalData(widget.id.toString(), 'recommendations');
+    reviews = ServerCalls().getMovieReviews(widget.id.toString());
+    imageUrls = ServerCalls().getImageUrls(widget.id.toString(), 'movie');
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(''),
-        centerTitle: true,
-        titleSpacing: 1.5,
-      ),
+      appBar: AppBar(),
       body: Container(
         color: Colors.purple[50],
         child: FutureBuilder(
-            future: tvSeriesDetails,
+            future: movieDetails,
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
-                return const Center(child: CircularProgressIndicator());
+                return Container(
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
               } else {
                 return SingleChildScrollView(
                   child: Column(
@@ -56,12 +60,12 @@ class _TvSeriesDetailsScreenState extends State<TvSeriesDetailsScreen> {
                         height: 300,
                         child: Block(
                             imageURL: Endpoints.baseImg +
-                                snapshot.data.backdropPath.toString()),
+                                snapshot.data!.backdropPath.toString()),
                       ),
                       ListTile(
                         leading: const Text(''),
                         title: Text(
-                          snapshot.data!.originalName.toString(),
+                          snapshot.data!.originalTitle.toString(),
                           style: style1,
                         ),
                         subtitle: Text(snapshot.data!.tagline.toString()),
@@ -70,6 +74,7 @@ class _TvSeriesDetailsScreenState extends State<TvSeriesDetailsScreen> {
                         margin: constMargin,
                         child: Text(snapshot.data!.overview.toString()),
                       ),
+                      const SizedBox(height: 8),
                       Container(
                         margin: const EdgeInsets.only(top: 10, bottom: 10),
                         height: 50,
@@ -96,41 +101,59 @@ class _TvSeriesDetailsScreenState extends State<TvSeriesDetailsScreen> {
                         ),
                       ),
                       Text(
-                        'Last Episode To Air',
+                        'Reviews',
                         style: style1,
                       ),
-                      const SizedBox(height: 9),
-                      Card(
-                        color: Colors.purple[200],
-                        margin: const EdgeInsets.only(
-                          left: 10,
-                          right: 10,
-                          bottom: 10,
-                        ),
-                        child: Column(
-                          children: [
-                            ListTile(
-                              leading: Text(
-                                snapshot.data.lastEpisodeToAir.episodeNumber
-                                    .toString(),
-                              ),
-                              title: Text(
-                                snapshot.data.lastEpisodeToAir.name.toString(),
-                                style: style1,
-                              ),
-                              subtitle: Text(
-                                  'Date Aired - ${snapshot.data.lastEpisodeToAir.airDate}'),
-                            ),
-                            Container(
-                                margin: constMargin.add(
-                                  const EdgeInsets.only(bottom: 24),
-                                ),
-                                child: Text(
-                                  snapshot.data.lastEpisodeToAir.overview
-                                      .toString(),
-                                )),
-                          ],
-                        ),
+                      Container(
+                        height: 150,
+                        width: MediaQuery.of(context).size.width,
+                        child: FutureBuilder(
+                            future: reviews,
+                            builder: (context, snapshot) {
+                              if (!snapshot.hasData) {
+                                return const Center(
+                                    child: CircularProgressIndicator());
+                              } else {
+                                if (snapshot.data!.isEmpty) {
+                                  return const Center(
+                                      child: Text('No Reviews Available'));
+                                }
+                                return ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    padding: const EdgeInsets.only(top: 8),
+                                    itemCount: snapshot.data!.length,
+                                    itemBuilder: (context, index) {
+                                      return Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.9,
+                                        margin: const EdgeInsets.all(15),
+                                        child: Card(
+                                          color: Colors.purple[500],
+                                          child: ListTile(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(12)),
+                                            leading: Icon(
+                                              Icons.person,
+                                              color: Colors.white,
+                                            ),
+                                            title: Text(
+                                              snapshot.data![index].author
+                                                  .toString(),
+                                              style: const TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            subtitle: Text(
+                                              '${snapshot.data![index].content.toString().replaceAll('\r', '').replaceAll('\n', ' ').substring(0, min(200, snapshot.data![index].content.toString().length)).replaceAll('\n', ' ')}...',
+                                              style: style2,
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    });
+                              }
+                            }),
                       ),
                       Text(
                         'Images',
@@ -144,8 +167,8 @@ class _TvSeriesDetailsScreenState extends State<TvSeriesDetailsScreen> {
                           future: imageUrls,
                           builder: (context, snapshot) {
                             if (!snapshot.hasData) {
-                              return Container(
-                                  child: const CircularProgressIndicator());
+                              return const Center(
+                                  child: CircularProgressIndicator());
                             } else {
                               if (snapshot.data!.isEmpty) {
                                 return Container(
@@ -179,12 +202,11 @@ class _TvSeriesDetailsScreenState extends State<TvSeriesDetailsScreen> {
                         child: FutureBuilder(
                             future: similar,
                             builder: (context, snapshot) {
+                              if (snapshot.data!.isEmpty) {
+                                return const Center(
+                                    child: Text('No Similar Movies Available'));
+                              }
                               if (snapshot.hasData) {
-                                if (snapshot.data!.isEmpty) {
-                                  return const Center(
-                                      child:
-                                          Text('No Similar Items Available'));
-                                }
                                 return ListView.builder(
                                     scrollDirection: Axis.horizontal,
                                     itemCount: snapshot.data!.length,
@@ -192,7 +214,7 @@ class _TvSeriesDetailsScreenState extends State<TvSeriesDetailsScreen> {
                                       return AggregateBlock(
                                         snapshot: snapshot,
                                         index: index,
-                                        tv: -1,
+                                        tv: 0,
                                       );
                                     });
                               } else {
@@ -228,7 +250,7 @@ class _TvSeriesDetailsScreenState extends State<TvSeriesDetailsScreen> {
                                       return AggregateBlock(
                                         snapshot: snapshot,
                                         index: index,
-                                        tv: -1,
+                                        tv: 0,
                                       );
                                     });
                               } else {
