@@ -20,40 +20,38 @@ class AggregateBlock extends StatefulWidget {
 class _AggregateBlockState extends State<AggregateBlock> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Block(
-        imageURL: (widget.snapshot.data[widget.index].posterPath == null)
-            ? Endpoints.blankImage
-            : Endpoints.baseImg +
-                widget.snapshot.data![widget.index].posterPath.toString(),
-        onTap: () {
-          if (widget.tv != null && widget.tv == -1) {
-            Navigator.of(context).push(PageAnimationTransition(
-              page: TvSeriesDetailsScreen(
-                id: widget.snapshot.data[widget.index].id,
-              ),
-              pageAnimationType: RightToLeftFadedTransition(),
-            ));
-          } else if (widget.tv != null && widget.tv == 0 ||
-              widget.snapshot.data![widget.index].mediaType.toString() ==
-                  'movie') {
-            Navigator.of(context).push(PageAnimationTransition(
-              page: MovieDetailsScreen(
-                id: widget.snapshot.data[widget.index].id,
-              ),
-              pageAnimationType: RightToLeftFadedTransition(),
-            ));
-          } else if (widget.snapshot.data![widget.index].mediaType.toString() ==
-              'tv') {
-            Navigator.of(context).push(PageAnimationTransition(
-              page: TvSeriesDetailsScreen(
-                id: widget.snapshot.data[widget.index].id,
-              ),
-              pageAnimationType: RightToLeftFadedTransition(),
-            ));
-          }
-        },
-      ),
+    return Block(
+      imageURL: (widget.snapshot.data[widget.index].posterPath == null)
+          ? Endpoints.blankImage
+          : Endpoints.baseImg +
+              widget.snapshot.data![widget.index].posterPath.toString(),
+      onTap: () {
+        if (widget.tv != null && widget.tv == -1) {
+          Navigator.of(context).push(PageAnimationTransition(
+            page: TvSeriesDetailsScreen(
+              id: widget.snapshot.data[widget.index].id,
+            ),
+            pageAnimationType: RightToLeftFadedTransition(),
+          ));
+        } else if (widget.tv != null && widget.tv == 0 ||
+            widget.snapshot.data![widget.index].mediaType.toString() ==
+                'movie') {
+          Navigator.of(context).push(PageAnimationTransition(
+            page: MovieDetailsScreen(
+              id: widget.snapshot.data[widget.index].id,
+            ),
+            pageAnimationType: RightToLeftFadedTransition(),
+          ));
+        } else if (widget.snapshot.data![widget.index].mediaType.toString() ==
+            'tv') {
+          Navigator.of(context).push(PageAnimationTransition(
+            page: TvSeriesDetailsScreen(
+              id: widget.snapshot.data[widget.index].id,
+            ),
+            pageAnimationType: RightToLeftFadedTransition(),
+          ));
+        }
+      },
     );
   }
 }

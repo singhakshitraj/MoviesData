@@ -85,7 +85,7 @@ class _FirstDisplayScreenState extends State<FirstDisplayScreen> {
                   style: style1,
                   textAlign: TextAlign.center,
                 ),
-                Container(
+                SizedBox(
                   height: MediaQuery.of(context).size.height * 0.60,
                   child: FutureBuilder(
                       future: trendingAll,
@@ -114,7 +114,7 @@ class _FirstDisplayScreenState extends State<FirstDisplayScreen> {
                 const SizedBox(
                   height: 8,
                 ),
-                Container(
+                SizedBox(
                   height: 230,
                   child: FutureBuilder(
                       future: trendingMovie,
@@ -146,7 +146,7 @@ class _FirstDisplayScreenState extends State<FirstDisplayScreen> {
                 const SizedBox(
                   height: 8,
                 ),
-                Container(
+                SizedBox(
                   height: 230,
                   child: FutureBuilder(
                       future: trendingTv,
@@ -178,7 +178,7 @@ class _FirstDisplayScreenState extends State<FirstDisplayScreen> {
                 const SizedBox(
                   height: 8,
                 ),
-                Container(
+                SizedBox(
                   height: 130,
                   child: FutureBuilder(
                       future: trendingPeople,
@@ -193,7 +193,7 @@ class _FirstDisplayScreenState extends State<FirstDisplayScreen> {
                                     radius: 40,
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(40),
-                                      child: Container(
+                                      child: SizedBox(
                                         width: 80,
                                         height: 80,
                                         child: CachedNetworkImage(
@@ -228,7 +228,7 @@ class _FirstDisplayScreenState extends State<FirstDisplayScreen> {
                   height: 8,
                 ),
                 /*----------------------*/
-                Container(
+                SizedBox(
                   height: 230,
                   child: FutureBuilder(
                       future: airingToday,
@@ -261,7 +261,7 @@ class _FirstDisplayScreenState extends State<FirstDisplayScreen> {
                 const SizedBox(
                   height: 8,
                 ),
-                Container(
+                SizedBox(
                   height: 230,
                   child: FutureBuilder(
                       future: onTheAir,
@@ -294,7 +294,7 @@ class _FirstDisplayScreenState extends State<FirstDisplayScreen> {
                 const SizedBox(
                   height: 8,
                 ),
-                Container(
+                SizedBox(
                   height: 230,
                   child: FutureBuilder(
                       future: tvTopRated,
@@ -327,7 +327,7 @@ class _FirstDisplayScreenState extends State<FirstDisplayScreen> {
                 const SizedBox(
                   height: 8,
                 ),
-                Container(
+                SizedBox(
                   height: 230,
                   child: FutureBuilder(
                       future: tvPopular,

@@ -10,7 +10,7 @@ class Block extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(6),
+      margin: const EdgeInsets.all(6),
       height: MediaQuery.of(context).size.height,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(6),
@@ -22,7 +22,7 @@ class Block extends StatelessWidget {
             placeholder: (context, url) => Shimmer.fromColors(
                 baseColor: Colors.purple,
                 highlightColor: Colors.deepPurpleAccent,
-                child: Card(
+                child: const Card(
                   child: Column(),
                 )),
             errorWidget: (context, url, error) => const Icon(Icons.error),
