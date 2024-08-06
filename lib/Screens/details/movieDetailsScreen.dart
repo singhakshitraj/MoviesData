@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:moviedb/API/endpoints.dart';
 import 'package:moviedb/API/serverCalls.dart';
 import 'package:moviedb/Models/Movies.dart' as Movies;
+import 'package:moviedb/Screens/SearchScreen.dart';
 import 'package:moviedb/util/AggregateBlock.dart';
 import 'package:moviedb/util/Block.dart';
+import 'package:moviedb/util/bookmark_pad.dart';
 import 'package:moviedb/util/style.dart';
 import 'package:moviedb/Models/MovieReviews.dart' as MovieReviews;
 import 'package:galleryimage/galleryimage.dart';
 import 'package:shimmer/shimmer.dart';
+import '../../util/loading_animations.dart';
 
 class MovieDetailsScreen extends StatefulWidget {
   num id;
@@ -24,7 +27,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   late Future<List<Movies.Results>> recommendation;
   late Future<List<MovieReviews.Results>> reviews;
   late Future<List<String>> imageUrls;
-
+  late double pieValue;
   @override
   void initState() {
     movieDetails = ServerCalls().getMovieDetails(widget.id.toString());
@@ -44,6 +47,15 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
         actions: [
           IconButton(
               onPressed: () {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SearchScreen()),
+                  (route) => route.isFirst,
+                );
+              },
+              icon: const Icon(Icons.search_outlined)),
+          IconButton(
+              onPressed: () {
                 Navigator.popUntil(context, (route) => route.isFirst);
               },
               icon: const Icon(Icons.home)),
@@ -55,21 +67,26 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
             future: movieDetails,
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
-                return Container(
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
+                return Center(
+                  child: fourRotatingDots,
                 );
               } else {
+                pieValue = snapshot.data!.voteAverage;
                 return SingleChildScrollView(
                   child: Column(
                     children: [
                       Container(
-                        height: 300,
-                        child: Block(
-                            imageURL: Endpoints.baseImg +
-                                snapshot.data!.backdropPath.toString()),
-                      ),
+                          height: 300,
+                          child: Stack(
+                            children: [
+                              Center(
+                                child: Block(
+                                    imageURL: Endpoints.baseImg +
+                                        snapshot.data!.backdropPath.toString()),
+                              ),
+                              bookmarkPad(pieValue, context),
+                            ],
+                          )),
                       ListTile(
                         leading: const Text(''),
                         title: Text(
@@ -122,8 +139,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                             future: reviews,
                             builder: (context, snapshot) {
                               if (!snapshot.hasData) {
-                                return const Center(
-                                    child: CircularProgressIndicator());
+                                return Center(child: fourRotatingDots);
                               } else {
                                 if (snapshot.data!.isEmpty) {
                                   return const Center(
@@ -178,8 +194,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                           future: imageUrls,
                           builder: (context, snapshot) {
                             if (!snapshot.hasData) {
-                              return const Center(
-                                  child: CircularProgressIndicator());
+                              return Center(child: fourRotatingDots);
                             } else {
                               if (snapshot.data!.isEmpty) {
                                 return Container(
@@ -229,8 +244,8 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                       );
                                     });
                               } else {
-                                return const Center(
-                                  child: CircularProgressIndicator(),
+                                return Center(
+                                  child: fourRotatingDots,
                                 );
                               }
                             }),
@@ -265,8 +280,8 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                       );
                                     });
                               } else {
-                                return const Center(
-                                  child: CircularProgressIndicator(),
+                                return Center(
+                                  child: fourRotatingDots,
                                 );
                               }
                             }),

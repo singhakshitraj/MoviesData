@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:moviedb/API/auth.dart';
 import 'package:moviedb/API/endpoints.dart';
+import 'package:moviedb/util/loading_animations.dart';
 import 'package:moviedb/util/style.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -42,20 +43,16 @@ class _AuthScreenState extends State<AuthScreen> {
                 backgroundColor: Colors.black,
                 content: Container(
                   height: 100,
-                  child: const Column(
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
+                      const Text(
                         'Please wait while you\'ll be redirected',
                         style: TextStyle(color: Colors.white),
                       ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      CircularProgressIndicator(
-                        color: Colors.white,
-                      ),
+                      const SizedBox(height: 20),
+                      fourRotatingDots,
                     ],
                   ),
                 ),

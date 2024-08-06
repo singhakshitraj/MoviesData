@@ -38,7 +38,15 @@ class _SearchScreenState extends State<SearchScreen> {
                   canBuild = true;
                 });
               },
-              icon: const Icon(Icons.ac_unit_sharp))
+              icon: const Icon(Icons.search_rounded)),
+          IconButton(
+              onPressed: () {
+                queryText.clear();
+                setState(() {
+                  canBuild = false;
+                });
+              },
+              icon: const Icon(Icons.clear))
         ],
       ),
       body: (!canBuild)

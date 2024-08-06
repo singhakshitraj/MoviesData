@@ -45,6 +45,10 @@ TextStyle style3 = const TextStyle(
   fontSize: 12,
 );
 
+TextStyle style4 = const TextStyle(
+  letterSpacing: 2.5,
+  fontWeight: FontWeight.bold,
+);
 InputDecoration textFieldDecoration = InputDecoration(
     fillColor: Colors.white,
     filled: true,

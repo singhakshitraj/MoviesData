@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -9,6 +10,7 @@ import 'package:moviedb/Models/People.dart' as people;
 import 'package:moviedb/Models/tvSeries.dart' as tv_series;
 import 'package:moviedb/Screens/SearchScreen.dart';
 import 'package:moviedb/util/AggregateBlock.dart';
+import 'package:moviedb/util/loading_animations.dart';
 import 'package:moviedb/util/style.dart';
 import 'package:page_animation_transition/animations/right_to_left_faded_transition.dart';
 import 'package:shimmer/shimmer.dart';
@@ -57,7 +59,7 @@ class _FirstDisplayScreenState extends State<FirstDisplayScreen> {
             IconButton(
                 onPressed: () {
                   Navigator.of(context).push(PageAnimationTransition(
-                    page: SearchScreen(),
+                    page: const SearchScreen(),
                     pageAnimationType: RightToLeftFadedTransition(),
                   ));
                 },
@@ -70,7 +72,63 @@ class _FirstDisplayScreenState extends State<FirstDisplayScreen> {
                 TextStyle(wordSpacing: 1.5, letterSpacing: 1.5, fontSize: 25),
           ),
         ),
-        drawer: const Drawer(),
+        drawer: Drawer(
+          child: Column(
+            children: [
+              Container(
+                height: 30,
+                color: const Color(0xff98e4e4),
+              ),
+              ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(20),
+                    bottomRight: Radius.circular(20),
+                  ),
+                  child: Image.asset('lib/Assets/cinema.jpeg')),
+              Expanded(
+                child: ListView(
+                  children: [
+                    ListTile(
+                      leading: const Icon(Icons.home),
+                      title: Text(
+                        'HOME',
+                        style: style4,
+                      ),
+                    ),
+                    ListTile(
+                      leading: const Icon(CupertinoIcons.heart_fill),
+                      title: Text(
+                        'LIKED',
+                        style: style4,
+                      ),
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.bookmark),
+                      title: Text(
+                        'WATCHLIST',
+                        style: style4,
+                      ),
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.settings),
+                      title: Text(
+                        'SETTINGS',
+                        style: style4,
+                      ),
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.contact_page),
+                      title: Text(
+                        'ABOUT',
+                        style: style4,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
         body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Container(
@@ -91,8 +149,7 @@ class _FirstDisplayScreenState extends State<FirstDisplayScreen> {
                       future: trendingAll,
                       builder: (context, snapshot) {
                         if (!snapshot.hasData) {
-                          return const Center(
-                              child: CircularProgressIndicator());
+                          return Center(child: fourRotatingDots);
                         } else {
                           return CarouselSlider.builder(
                               itemCount: snapshot.data!.length,
@@ -132,10 +189,7 @@ class _FirstDisplayScreenState extends State<FirstDisplayScreen> {
                                   ),
                               itemCount: snapshot.data!.length);
                         } else {
-                          return Shimmer.fromColors(
-                              baseColor: Colors.purple,
-                              highlightColor: Colors.deepPurpleAccent,
-                              child: const Text('Shimmer'));
+                          return fourRotatingDots;
                         }
                       }),
                 ),
@@ -164,10 +218,7 @@ class _FirstDisplayScreenState extends State<FirstDisplayScreen> {
                                   ),
                               itemCount: snapshot.data!.length);
                         } else {
-                          return Shimmer.fromColors(
-                              baseColor: Colors.black,
-                              highlightColor: Colors.white,
-                              child: const Text('Shimmer'));
+                          return fourRotatingDots;
                         }
                       }),
                 ),
@@ -213,10 +264,7 @@ class _FirstDisplayScreenState extends State<FirstDisplayScreen> {
                                   ),
                               itemCount: snapshot.data!.length);
                         } else {
-                          return Shimmer.fromColors(
-                              baseColor: Colors.black,
-                              highlightColor: Colors.white,
-                              child: const Text('Shimmer'));
+                          return fourRotatingDots;
                         }
                       }),
                 ),
@@ -234,8 +282,7 @@ class _FirstDisplayScreenState extends State<FirstDisplayScreen> {
                       future: airingToday,
                       builder: (context, snapshot) {
                         if (!snapshot.hasData) {
-                          return const Center(
-                              child: CircularProgressIndicator());
+                          return Center(child: fourRotatingDots);
                         } else {
                           return ListView.separated(
                               scrollDirection: Axis.horizontal,
@@ -267,8 +314,7 @@ class _FirstDisplayScreenState extends State<FirstDisplayScreen> {
                       future: onTheAir,
                       builder: (context, snapshot) {
                         if (!snapshot.hasData) {
-                          return const Center(
-                              child: CircularProgressIndicator());
+                          return Center(child: fourRotatingDots);
                         } else {
                           return ListView.separated(
                               scrollDirection: Axis.horizontal,
@@ -300,8 +346,7 @@ class _FirstDisplayScreenState extends State<FirstDisplayScreen> {
                       future: tvTopRated,
                       builder: (context, snapshot) {
                         if (!snapshot.hasData) {
-                          return const Center(
-                              child: CircularProgressIndicator());
+                          return Center(child: fourRotatingDots);
                         } else {
                           return ListView.separated(
                               scrollDirection: Axis.horizontal,
@@ -333,8 +378,7 @@ class _FirstDisplayScreenState extends State<FirstDisplayScreen> {
                       future: tvPopular,
                       builder: (context, snapshot) {
                         if (!snapshot.hasData) {
-                          return const Center(
-                              child: CircularProgressIndicator());
+                          return Center(child: fourRotatingDots);
                         } else {
                           return ListView.separated(
                               scrollDirection: Axis.horizontal,

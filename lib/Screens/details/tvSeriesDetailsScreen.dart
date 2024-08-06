@@ -1,11 +1,13 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:galleryimage/galleryimage.dart';
 import 'package:moviedb/API/endpoints.dart';
 import 'package:moviedb/API/serverCalls.dart';
+import 'package:moviedb/Screens/SearchScreen.dart';
 import 'package:moviedb/util/AggregateBlock.dart';
 import 'package:moviedb/util/Block.dart';
+import 'package:moviedb/util/bookmark_pad.dart';
+import 'package:moviedb/util/loading_animations.dart';
 import 'package:moviedb/util/style.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -22,6 +24,7 @@ class _TvSeriesDetailsScreenState extends State<TvSeriesDetailsScreen> {
   late Future imageUrls;
   late Future similar;
   late Future recommendation;
+  late double pieValue;
   @override
   void initState() {
     tvSeriesDetails = ServerCalls().getTvSeriesDetails(widget.id.toString());
@@ -40,6 +43,15 @@ class _TvSeriesDetailsScreenState extends State<TvSeriesDetailsScreen> {
         actions: [
           IconButton(
               onPressed: () {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SearchScreen()),
+                  (route) => route.isFirst,
+                );
+              },
+              icon: const Icon(Icons.search_outlined)),
+          IconButton(
+              onPressed: () {
                 Navigator.popUntil(context, (route) => route.isFirst);
               },
               icon: const Icon(Icons.home)),
@@ -51,17 +63,24 @@ class _TvSeriesDetailsScreenState extends State<TvSeriesDetailsScreen> {
             future: tvSeriesDetails,
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
-                return const Center(child: CircularProgressIndicator());
+                return Center(child: fourRotatingDots);
               } else {
+                pieValue = snapshot.data!.voteAverage;
                 return SingleChildScrollView(
                   child: Column(
                     children: [
                       Container(
-                        height: 300,
-                        child: Block(
-                            imageURL: Endpoints.baseImg +
-                                snapshot.data.backdropPath.toString()),
-                      ),
+                          height: 300,
+                          child: Stack(
+                            children: [
+                              Center(
+                                child: Block(
+                                    imageURL: Endpoints.baseImg +
+                                        snapshot.data!.backdropPath.toString()),
+                              ),
+                              bookmarkPad(pieValue, context),
+                            ],
+                          )),
                       ListTile(
                         leading: const Text(''),
                         title: Text(
@@ -147,8 +166,7 @@ class _TvSeriesDetailsScreenState extends State<TvSeriesDetailsScreen> {
                           future: imageUrls,
                           builder: (context, snapshot) {
                             if (!snapshot.hasData) {
-                              return Container(
-                                  child: const CircularProgressIndicator());
+                              return Container(child: fourRotatingDots);
                             } else {
                               if (snapshot.data!.isEmpty) {
                                 return Container(
@@ -198,8 +216,8 @@ class _TvSeriesDetailsScreenState extends State<TvSeriesDetailsScreen> {
                                       );
                                     });
                               } else {
-                                return const Center(
-                                  child: CircularProgressIndicator(),
+                                return Center(
+                                  child: fourRotatingDots,
                                 );
                               }
                             }),
@@ -233,8 +251,8 @@ class _TvSeriesDetailsScreenState extends State<TvSeriesDetailsScreen> {
                                       );
                                     });
                               } else {
-                                return const Center(
-                                  child: CircularProgressIndicator(),
+                                return Center(
+                                  child: fourRotatingDots,
                                 );
                               }
                             }),
