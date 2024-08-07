@@ -17,6 +17,7 @@ class _SearchScreenState extends State<SearchScreen> {
   TextEditingController queryText = TextEditingController();
   late Future<List<movies.Results>> querySearchResults;
   bool canBuild = false;
+  final _focusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,29 +25,35 @@ class _SearchScreenState extends State<SearchScreen> {
         elevation: 0,
         backgroundColor: Colors.purple[500],
         foregroundColor: Colors.white,
-        title: TextField(
-          autofocus: true,
-          controller: queryText,
-          decoration: textFieldDecoration,
+        title: GestureDetector(
+          onTap: () => FocusScope.of(context).requestFocus(_focusNode),
+          child: TextField(
+            autofocus: true,
+            controller: queryText,
+            decoration: textFieldDecoration,
+            focusNode: _focusNode,
+          ),
         ),
         actions: [
+          IconButton(
+              onPressed: () {
+                queryText.clear();
+                setState(() {
+                  canBuild = false;
+                  FocusScope.of(context).requestFocus(_focusNode);
+                });
+              },
+              icon: const Icon(Icons.clear)),
           IconButton(
               onPressed: () {
                 setState(() {
                   querySearchResults =
                       ServerCalls().getSearchResults(queryText.text);
                   canBuild = true;
+                  _focusNode.unfocus();
                 });
               },
               icon: const Icon(Icons.search_rounded)),
-          IconButton(
-              onPressed: () {
-                queryText.clear();
-                setState(() {
-                  canBuild = false;
-                });
-              },
-              icon: const Icon(Icons.clear))
         ],
       ),
       body: (!canBuild)

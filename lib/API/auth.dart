@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:moviedb/API/endpoints.dart';
+import 'package:moviedb/API/shared_preferences.dart';
 
 class Auth {
   Future<String> requestToken() async {
@@ -21,12 +22,24 @@ class Auth {
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       if (data['success'] == true) {
+        saveSessionID(data['session_id']);
         return data['session_id'];
       } else {
         return '-1';
       }
     } else {
       return '-1';
+    }
+  }
+
+  Future<String> getAccountId(String sessionId) async {
+    final response = await http.get(Uri.parse(
+        '${Endpoints.baseUrl}/account${Endpoints.apiKey}&session_id=$sessionId'));
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body)['id'];
+      return data.toString();
+    } else {
+      return '';
     }
   }
 }

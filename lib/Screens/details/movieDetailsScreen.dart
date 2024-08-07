@@ -1,15 +1,17 @@
 import 'dart:math';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:moviedb/API/add_to_list.dart';
 import 'package:moviedb/API/endpoints.dart';
 import 'package:moviedb/API/serverCalls.dart';
 import 'package:moviedb/Models/Movies.dart' as Movies;
 import 'package:moviedb/Screens/SearchScreen.dart';
 import 'package:moviedb/util/AggregateBlock.dart';
 import 'package:moviedb/util/Block.dart';
-import 'package:moviedb/util/bookmark_pad.dart';
 import 'package:moviedb/util/style.dart';
 import 'package:moviedb/Models/MovieReviews.dart' as MovieReviews;
 import 'package:galleryimage/galleryimage.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../util/loading_animations.dart';
 
@@ -28,6 +30,8 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   late Future<List<MovieReviews.Results>> reviews;
   late Future<List<String>> imageUrls;
   late double pieValue;
+  bool isLiked = false;
+  bool isInWatchlist = false;
   @override
   void initState() {
     movieDetails = ServerCalls().getMovieDetails(widget.id.toString());
@@ -72,6 +76,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                 );
               } else {
                 pieValue = snapshot.data!.voteAverage;
+                String? imgUrl = snapshot.data.backdropPath;
                 return SingleChildScrollView(
                   child: Column(
                     children: [
@@ -81,10 +86,84 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                             children: [
                               Center(
                                 child: Block(
-                                    imageURL: Endpoints.baseImg +
-                                        snapshot.data!.backdropPath.toString()),
+                                    imageURL: (imgUrl == null)
+                                        ? Endpoints.blankImage
+                                        : Endpoints.baseImg + imgUrl),
                               ),
-                              bookmarkPad(pieValue, context),
+                              Align(
+                                alignment: Alignment.bottomRight,
+                                child: ClipRRect(
+                                  borderRadius: const BorderRadius.only(
+                                    bottomLeft: Radius.circular(40),
+                                    topLeft: Radius.circular(40),
+                                  ),
+                                  child: Container(
+                                    color: Colors.purple[200],
+                                    height: 60,
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.5,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        CircularPercentIndicator(
+                                          radius: 25,
+                                          animation: true,
+                                          animationDuration: 2500,
+                                          lineWidth: 5.0,
+                                          percent: (pieValue / 10),
+                                          center: Text(
+                                              pieValue.toStringAsPrecision(3),
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15,
+                                              )),
+                                          circularStrokeCap:
+                                              CircularStrokeCap.butt,
+                                          backgroundColor: Colors.white,
+                                          progressColor: Colors.black,
+                                        ),
+                                        IconButton(
+                                            onPressed: () async {
+                                              final result = await AddToList()
+                                                  .addToLiked(
+                                                      'movie',
+                                                      snapshot.data.id
+                                                          .toString());
+                                              if (result == 'true') {
+                                                setState(() {
+                                                  isLiked = true;
+                                                });
+                                              }
+                                            },
+                                            icon: isLiked
+                                                ? const Icon(
+                                                    CupertinoIcons.heart_fill)
+                                                : const Icon(
+                                                    CupertinoIcons.heart)),
+                                        IconButton(
+                                          onPressed: () async {
+                                            final result = await AddToList()
+                                                .addToWatchlist(
+                                                    'movie',
+                                                    snapshot.data.id
+                                                        .toString());
+                                            if (result == 'true') {
+                                              setState(() {
+                                                isInWatchlist = true;
+                                              });
+                                            }
+                                          },
+                                          icon: (isInWatchlist)
+                                              ? const Icon(Icons.bookmark)
+                                              : const Icon(
+                                                  Icons.bookmark_border),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ],
                           )),
                       ListTile(
@@ -166,13 +245,19 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                               color: Colors.white,
                                             ),
                                             title: Text(
-                                              snapshot.data![index].author
-                                                  .toString(),
+                                              (snapshot.data![index].author ==
+                                                      null)
+                                                  ? 'Anonymous'
+                                                  : snapshot.data![index].author
+                                                      .toString(),
                                               style: const TextStyle(
                                                   color: Colors.white),
                                             ),
                                             subtitle: Text(
-                                              '${snapshot.data![index].content.toString().replaceAll('\r', '').replaceAll('\n', ' ').substring(0, min(200, snapshot.data![index].content.toString().length)).replaceAll('\n', ' ')}...',
+                                              (snapshot.data![index].content ==
+                                                      null)
+                                                  ? 'No Content Available'
+                                                  : '${snapshot.data![index].content.toString().replaceAll('\r', '').replaceAll('\n', ' ').substring(0, min(200, snapshot.data![index].content.toString().length)).replaceAll('\n', ' ')}...',
                                               style: style2,
                                             ),
                                           ),
@@ -232,7 +317,9 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                 return const Center(
                                     child: Text('No Similar Movies Available'));
                               }
-                              if (snapshot.hasData) {
+                              if (snapshot.hasData &&
+                                  snapshot.data != null &&
+                                  snapshot.data!.isNotEmpty) {
                                 return ListView.builder(
                                     scrollDirection: Axis.horizontal,
                                     itemCount: snapshot.data!.length,
