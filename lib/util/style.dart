@@ -10,6 +10,7 @@ TextStyle style1 = const TextStyle(
 
 EdgeInsetsGeometry constMargin = const EdgeInsets.only(left: 24, right: 24);
 
+EdgeInsetsGeometry paddingLeftRight = const EdgeInsets.only(left: 8, right: 8);
 ButtonStyle elevatedButtonStyle = ElevatedButton.styleFrom(
   padding: const EdgeInsets.only(left: 25, right: 25),
   shape: RoundedRectangleBorder(
@@ -36,11 +37,6 @@ ButtonStyle elevatedButtonStyle2(double width, double height) {
 }
 
 TextStyle style2 = const TextStyle(
-  color: Colors.white,
-  fontSize: 12,
-);
-
-TextStyle style3 = const TextStyle(
   color: Colors.white,
   fontSize: 12,
 );

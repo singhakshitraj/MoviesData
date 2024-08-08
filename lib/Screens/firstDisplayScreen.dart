@@ -9,6 +9,8 @@ import 'package:moviedb/Models/Movies.dart' as movies;
 import 'package:moviedb/Models/People.dart' as people;
 import 'package:moviedb/Models/tvSeries.dart' as tv_series;
 import 'package:moviedb/Screens/SearchScreen.dart';
+import 'package:moviedb/Screens/favorite_screen.dart';
+import 'package:moviedb/Screens/watchlist_screen.dart';
 import 'package:moviedb/util/AggregateBlock.dart';
 import 'package:moviedb/util/loading_animations.dart';
 import 'package:moviedb/util/style.dart';
@@ -95,18 +97,32 @@ class _FirstDisplayScreenState extends State<FirstDisplayScreen> {
                         style: style4,
                       ),
                     ),
-                    ListTile(
-                      leading: const Icon(CupertinoIcons.heart_fill),
-                      title: Text(
-                        'LIKED',
-                        style: style4,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const FavoriteScreen()));
+                      },
+                      child: ListTile(
+                        leading: const Icon(CupertinoIcons.heart_fill),
+                        title: Text(
+                          'MY FAVORITE',
+                          style: style4,
+                        ),
                       ),
                     ),
-                    ListTile(
-                      leading: const Icon(Icons.bookmark),
-                      title: Text(
-                        'WATCHLIST',
-                        style: style4,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const WatchListScreen()));
+                      },
+                      child: ListTile(
+                        leading: const Icon(Icons.bookmark),
+                        title: Text(
+                          'MY WATCHLIST',
+                          style: style4,
+                        ),
                       ),
                     ),
                     ListTile(

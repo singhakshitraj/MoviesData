@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:galleryimage/galleryimage.dart';
-import 'package:moviedb/API/add_to_list.dart';
+import 'package:moviedb/API/list_operations.dart';
 import 'package:moviedb/API/endpoints.dart';
 import 'package:moviedb/API/serverCalls.dart';
 import 'package:moviedb/Screens/SearchScreen.dart';
@@ -121,7 +121,7 @@ class _TvSeriesDetailsScreenState extends State<TvSeriesDetailsScreen> {
                                             onPressed: () async {
                                               final result = await AddToList()
                                                   .addToLiked(
-                                                      'movie',
+                                                      'tv',
                                                       snapshot.data.id
                                                           .toString());
                                               if (result == 'true') {

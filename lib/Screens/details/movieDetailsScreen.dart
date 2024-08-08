@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:moviedb/API/add_to_list.dart';
+import 'package:moviedb/API/list_operations.dart';
 import 'package:moviedb/API/endpoints.dart';
 import 'package:moviedb/API/serverCalls.dart';
 import 'package:moviedb/Models/Movies.dart' as Movies;

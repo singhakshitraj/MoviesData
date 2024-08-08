@@ -78,11 +78,15 @@ class _SearchScreenState extends State<SearchScreen> {
                               const SliverGridDelegateWithMaxCrossAxisExtent(
                                   maxCrossAxisExtent: 300),
                           itemBuilder: (context, index) {
+                            bool isTv = snapshot.data![index].mediaType == 'tv';
                             return GridTile(
                               footer: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
-                                  snapshot.data![index].title.toString(),
+                                  (isTv)
+                                      ? snapshot.data![index].originalTitle
+                                          .toString()
+                                      : snapshot.data![index].title.toString(),
                                   style: style2.copyWith(fontSize: 20),
                                 ),
                               ),
@@ -91,9 +95,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 child: AggregateBlock(
                                   snapshot: snapshot,
                                   index: index,
-                                  tv: (snapshot.data![index].mediaType == 'tv')
-                                      ? -1
-                                      : 0,
+                                  tv: (isTv) ? -1 : 0,
                                 ),
                               ),
                             );

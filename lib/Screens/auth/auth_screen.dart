@@ -53,7 +53,7 @@ class _AuthScreenState extends State<AuthScreen> {
                         style: TextStyle(color: Colors.white),
                       ),
                       const SizedBox(height: 20),
-                      fourRotatingDots,
+                      fourRotatingDotsWhite,
                     ],
                   ),
                 ),
@@ -85,8 +85,8 @@ class _AuthScreenState extends State<AuthScreen> {
                         backgroundColor:
                             const WidgetStatePropertyAll(Colors.black)),
                     onPressed: () async {
-                      final vals = await _matchIDs(token);
-                      if (vals == '-1') {
+                      final sessionId = await _matchIDs(token);
+                      if (sessionId == '-1') {
                         showDialog(
                             context: context,
                             builder: (context) {
@@ -103,7 +103,7 @@ class _AuthScreenState extends State<AuthScreen> {
                               );
                             });
                       } else {
-                        saveAccountID(vals);
+                        saveAccountID(sessionId);
                         Navigator.pushNamedAndRemoveUntil(
                             context, '/toFirstDisplay/', (_) => false);
                       }
