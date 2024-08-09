@@ -5,7 +5,7 @@ import 'package:moviedb/API/list_operations.dart';
 import 'package:moviedb/API/endpoints.dart';
 import 'package:moviedb/API/serverCalls.dart';
 import 'package:moviedb/Models/Movies.dart' as Movies;
-import 'package:moviedb/Screens/SearchScreen.dart';
+import 'package:moviedb/Screens/search/SearchScreen.dart';
 import 'package:moviedb/util/AggregateBlock.dart';
 import 'package:moviedb/util/Block.dart';
 import 'package:moviedb/util/style.dart';

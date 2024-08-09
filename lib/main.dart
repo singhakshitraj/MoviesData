@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:moviedb/Screens/firstDisplayScreen.dart';
+import 'package:moviedb/Screens/home_screen/firstDisplayScreen.dart';
 import 'package:moviedb/Screens/auth/select_auth_method.dart';
 
 void main() async {

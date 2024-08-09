@@ -8,9 +8,10 @@ import 'package:moviedb/API/serverCalls.dart';
 import 'package:moviedb/Models/Movies.dart' as movies;
 import 'package:moviedb/Models/People.dart' as people;
 import 'package:moviedb/Models/tvSeries.dart' as tv_series;
-import 'package:moviedb/Screens/SearchScreen.dart';
-import 'package:moviedb/Screens/favorite_screen.dart';
-import 'package:moviedb/Screens/watchlist_screen.dart';
+import 'package:moviedb/Screens/about/about_app.dart';
+import 'package:moviedb/Screens/search/SearchScreen.dart';
+import 'package:moviedb/Screens/list_screens/favorite_screen.dart';
+import 'package:moviedb/Screens/list_screens/watchlist_screen.dart';
 import 'package:moviedb/util/AggregateBlock.dart';
 import 'package:moviedb/util/loading_animations.dart';
 import 'package:moviedb/util/style.dart';
@@ -90,11 +91,14 @@ class _FirstDisplayScreenState extends State<FirstDisplayScreen> {
               Expanded(
                 child: ListView(
                   children: [
-                    ListTile(
-                      leading: const Icon(Icons.home),
-                      title: Text(
-                        'HOME',
-                        style: style4,
+                    GestureDetector(
+                      onTap: () => Navigator.pop(context),
+                      child: ListTile(
+                        leading: const Icon(Icons.home),
+                        title: Text(
+                          'HOME',
+                          style: style4,
+                        ),
                       ),
                     ),
                     GestureDetector(
@@ -125,18 +129,20 @@ class _FirstDisplayScreenState extends State<FirstDisplayScreen> {
                         ),
                       ),
                     ),
-                    ListTile(
-                      leading: const Icon(Icons.settings),
-                      title: Text(
-                        'SETTINGS',
-                        style: style4,
-                      ),
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.contact_page),
-                      title: Text(
-                        'ABOUT',
-                        style: style4,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const AboutApp()));
+                      },
+                      child: ListTile(
+                        leading: const Icon(Icons.contact_page),
+                        title: Text(
+                          'ABOUT',
+                          style: style4,
+                        ),
                       ),
                     ),
                   ],

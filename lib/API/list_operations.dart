@@ -52,7 +52,7 @@ class ShowList {
     final accountID = sharedPreferences.getString('accountID');
     final sessionID = sharedPreferences.getString('sessionID');
     final response = await http.get(Uri.parse(
-        '${Endpoints.baseUrl}/account/${accountID!}/$whatToSearch/movies${Endpoints.apiKey}&session_id=${sessionID!}'));
+        '${Endpoints.baseUrl}/account/${accountID!}/$whatToSearch/movies${Endpoints.apiKey}&session_id=${sessionID!}&sort_by=created_at.desc'));
     if (response.statusCode == 200 || response.statusCode == 201) {
       final data = jsonDecode(response.body)['results'];
       for (Map value in data) {
@@ -70,7 +70,7 @@ class ShowList {
     final accountID = sharedPreferences.getString('accountID');
     final sessionID = sharedPreferences.getString('sessionID');
     final response = await http.get(Uri.parse(
-        '${Endpoints.baseUrl}/account/${accountID!}/$whatToSearch/tv${Endpoints.apiKey}&session_id=${sessionID!}'));
+        '${Endpoints.baseUrl}/account/${accountID!}/$whatToSearch/tv${Endpoints.apiKey}&session_id=${sessionID!}&sort_by=created_at.desc'));
     if (response.statusCode == 200 || response.statusCode == 201) {
       final data = jsonDecode(response.body)['results'];
       for (Map value in data) {

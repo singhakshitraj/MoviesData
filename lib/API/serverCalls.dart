@@ -8,7 +8,6 @@ import 'package:moviedb/Models/MovieDetails.dart';
 import 'package:moviedb/Models/tvSeriesDetails.dart' as tvSeriesDetails;
 import 'package:moviedb/Models/MovieReviews.dart' as MovieReviews;
 import 'package:moviedb/Models/ImageUrls.dart';
-import 'package:moviedb/Models/Movies.dart' as mov;
 
 class ServerCalls {
   Future<List<Movies.Results>> getMoviesData(String category) async {
@@ -119,20 +118,6 @@ class ServerCalls {
     final data = jsonDecode(response.body)['results'];
     for (Map value in data) {
       lis.add(tvSeries.Results.fromJson(value));
-    }
-    return lis;
-  }
-
-  Future<List<mov.Results>> getSearchResults(String query) async {
-    List<mov.Results> lis = [];
-    final stringToParse =
-        '${Endpoints.baseUrl}/search/multi${Endpoints.apiKey}&query=$query';
-    final response = await http.get(Uri.parse(stringToParse));
-    final data = jsonDecode(response.body)['results'];
-    for (Map value in data) {
-      if (Movies.Results.fromJson(value).mediaType != 'person') {
-        lis.add(Movies.Results.fromJson(value));
-      }
     }
     return lis;
   }

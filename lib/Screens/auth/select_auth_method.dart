@@ -72,13 +72,6 @@ class SelectAuthMethod extends StatelessWidget {
                         });
                   }, MediaQuery.of(context).size.width),
                 ),
-                const SizedBox(height: 20),
-                createWidget('lib/Assets/guest.png', 'Guest Login',
-                    'Using This Method Involves Login with a Guest Account. Guest Login Method only saves the watchlist and favourites for current session. If You want to store your favourites and bookmarks, use he login method from above.',
-                    () {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                      '/toFirstDisplay/', (_) => false);
-                }, MediaQuery.of(context).size.width),
               ],
             ),
           ),

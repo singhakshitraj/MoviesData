@@ -7,7 +7,7 @@ Widget createWidget(String imagePath, String title, String description,
   return ClipRRect(
     borderRadius: BorderRadius.circular(25),
     child: SizedBox(
-      width: 400,
+      width: width * 0.8,
       child: ExpansionTile(
         leading: Container(
           margin: const EdgeInsets.all(10),
